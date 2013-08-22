@@ -1,15 +1,15 @@
 <?php
-	class BIPS
+	class bips
 	{
 		var $code, $title, $description, $enabled, $payment;
 
-		function BIPS()
+		function bips()
 		{
 			global $order;
 
 			$this->signature = 'BIPS|BIPS_standard|1.0|2.2';
 
-			$this->code = 'BIPS';
+			$this->code = 'bips';
 			$this->title = MODULE_PAYMENT_BIPS_TEXT_TITLE;
 			$this->description = MODULE_PAYMENT_BIPS_TEXT_DESCRIPTION;
 			$this->sort_order = MODULE_PAYMENT_BIPS_SORT_ORDER;
@@ -18,9 +18,9 @@
 			if ((int)MODULE_PAYMENT_BIPS_ORDER_STATUS_ID > 0)
 			{
 				$this->order_status = MODULE_PAYMENT_BIPS_ORDER_STATUS_ID;
-				$payment = 'BIPS';
+				$payment = 'bips';
 			}
-			else if ($payment == 'BIPS')
+			else if ($payment == 'bips')
 			{
 				$payment = '';
 			}
@@ -114,7 +114,7 @@
 			$ch = curl_init();
 			curl_setopt_array($ch, array(
 			CURLOPT_URL => 'https://bips.me/api/v1/invoice',
-			CURLOPT_USERPWD => MODULE_PAYMENT_BIPS_SECRET,
+			CURLOPT_USERPWD => MODULE_PAYMENT_BIPS_APIKEY,
 			CURLOPT_POSTFIELDS => 'price=' . number_format($order->info['total'], 2, '.', '') . '&currency=' . $order->info['currency'] . '&item=' . $item_name . '&custom=' . json_encode(array('order_id' => $insert_id, 'physical' => ($order->content_type == 'physical' ? 'true' : 'false'), 'returnurl' => rawurlencode(tep_href_link('account')), 'cancelurl' => rawurlencode(tep_href_link('account')))),
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_HTTPAUTH => CURLAUTH_BASIC));
